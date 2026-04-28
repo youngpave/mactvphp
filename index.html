@@ -5,33 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maç TV | Canlı Yayın</title>
     <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
-        }
-
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+        .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -41,7 +18,9 @@
             src="https://liveon4.zip/antena.php?id=1879" 
             allow="autoplay; encrypted-media" 
             allowfullscreen 
-            scrolling="no">
+            scrolling="no"
+            /* Burası pop-up reklamları durduran sihirli kısım */
+            sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation">
         </iframe>
     </div>
 
