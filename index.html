@@ -2,50 +2,63 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Canlı Yayın</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özel Player Görünümü</title>
     <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        body, html {
+        /* Player'ın görüneceği pencere */
+        .kırpma-alani {
             width: 100%;
-            height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
+            max-width: 850px; /* Player genişliği */
+            height: 480px;    /* Player yüksekliği */
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #333;
+            background: #000;
         }
 
-        .video-container {
+        /* İçerideki asıl site */
+        .kırpma-alani iframe {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            
+            /* AYARLAR: Player'ı tam oturtmak için bu değerleri oyna */
+            top: -415px;      /* Üstteki logoları ve reklamları yukarı kaydırır */
+            left: -10px;      /* Varsa yan boşlukları dengeler */
+            
+            width: 1000px;    /* Sitenin orijinal genişliği (daraltma) */
+            height: 1500px;   /* Sitenin toplam yüksekliği */
+            
+            border: none;
+            pointer-events: auto; /* Tıklamalara izin verir */
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        /* Mobilde player kayarsa burayı kullanabilirsin */
+        @media (max-width: 600px) {
+            .kırpma-alani {
+                height: 250px;
+            }
+            .kırpma-alani iframe {
+                top: -380px; 
+                width: 600px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <iframe 
-            src="https://liveon4.zip/antena.php?id=1879" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen 
-            scrolling="no">
-        </iframe>
-    </div>
+<div class="kırpma-alani">
+    <iframe src="https://www.taraftarium186.top/#bein-1-canli-izle" scrolling="no"></iframe>
+</div>
 
 </body>
 </html>
-
-
