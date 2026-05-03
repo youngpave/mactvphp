@@ -1,37 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maç TV | Canlı Yayın</title>
     <style>
-        body { margin: 0; background: #000; overflow: hidden; }
-
-        .pencere {
-            width: 100vw;         /* Ekran genişliği kadar */
-            height: 56.25vw;      /* 16:9 oranında yükseklik (Video standardı) */
-            overflow: hidden;
-            position: relative;
-            background: #000;
+        /* Tüm boşlukları sıfırla ve taşmaları engelle */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .pencere iframe {
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Kaydırma çubuklarını gizler */
+            background-color: #000; /* Arka planı siyah yapar */
+        }
+
+        .video-container {
             position: absolute;
-            
-            /* DEĞİŞTİRİLECEK YERLER */
-            top: -340px;          /* Siyahlığı gidermek için bu sayıyı küçült (örn: -300 yap) */
-            left: 50%;            /* Sayfayı ortala */
-            transform: translateX(-50%); /* Tam merkezleme */
-            
-            width: 1000px;        /* Orijinal sitenin masaüstü genişliği */
-            height: 1500px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
             border: none;
         }
     </style>
 </head>
 <body>
 
-<div class="pencere">
-    <iframe src="https://taratv1.shop/Watch/M970499" scrolling="no"></iframe>
-</div>
+    <div class="video-container">
+        <iframe 
+            src="https://benunluyumaskim.betconnectiframecdn1000.shop/player/player2.php?id=601" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen 
+            scrolling="no">
+        </iframe>
+    </div>
 
 </body>
 </html>
+
+
