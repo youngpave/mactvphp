@@ -1,62 +1,35 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Özel Player Görünümü</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
+        body { margin: 0; background: #000; overflow: hidden; }
 
-        /* Player'ın görüneceği pencere */
-        .kırpma-alani {
-            width: 100%;
-            max-width: 850px; /* Player genişliği */
-            height: 480px;    /* Player yüksekliği */
+        .pencere {
+            width: 100vw;         /* Ekran genişliği kadar */
+            height: 56.25vw;      /* 16:9 oranında yükseklik (Video standardı) */
             overflow: hidden;
             position: relative;
-            border: 2px solid #333;
             background: #000;
         }
 
-        /* İçerideki asıl site */
-        .kırpma-alani iframe {
+        .pencere iframe {
             position: absolute;
             
-            /* AYARLAR: Player'ı tam oturtmak için bu değerleri oyna */
-            top: -415px;      /* Üstteki logoları ve reklamları yukarı kaydırır */
-            left: -10px;      /* Varsa yan boşlukları dengeler */
+            /* DEĞİŞTİRİLECEK YERLER */
+            top: -340px;          /* Siyahlığı gidermek için bu sayıyı küçült (örn: -300 yap) */
+            left: 50%;            /* Sayfayı ortala */
+            transform: translateX(-50%); /* Tam merkezleme */
             
-            width: 1000px;    /* Sitenin orijinal genişliği (daraltma) */
-            height: 1500px;   /* Sitenin toplam yüksekliği */
-            
+            width: 1000px;        /* Orijinal sitenin masaüstü genişliği */
+            height: 1500px;
             border: none;
-            pointer-events: auto; /* Tıklamalara izin verir */
-        }
-
-        /* Mobilde player kayarsa burayı kullanabilirsin */
-        @media (max-width: 600px) {
-            .kırpma-alani {
-                height: 250px;
-            }
-            .kırpma-alani iframe {
-                top: -380px; 
-                width: 600px;
-            }
         }
     </style>
 </head>
 <body>
 
-<div class="kırpma-alani">
+<div class="pencere">
     <iframe src="https://taratv1.shop/Watch/M970499" scrolling="no"></iframe>
 </div>
 
