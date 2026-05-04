@@ -1,53 +1,75 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Fullscreen Buton</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maç TV | Canlı Yayın</title>
 
 <style>
-body, html {
-    margin:0;
-    padding:0;
-    height:100%;
-    background:#000;
-    overflow:hidden;
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
 }
 
+/* ANA KAPSAYICI */
 .video-container {
-    width:100%;
-    height:100%;
-    position:relative;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
 }
 
+/* İFRAME TAM EKRAN */
 iframe {
-    width:100%;
-    height:100%;
-    border:none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
+/* FULLSCREEN OLUNCA DA TAM KAPLA */
+.video-container:fullscreen {
+    width: 100vw;
+    height: 100vh;
+}
+
+.video-container:fullscreen iframe {
+    width: 100vw;
+    height: 100vh;
+}
+
+/* BUTON */
 #fs-button {
-    position:absolute;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    padding:15px 25px;
-    background:red;
-    color:#fff;
-    border:none;
-    border-radius:50px;
-    font-weight:bold;
-    cursor:pointer;
-    z-index:999;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    background: red;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 999;
 }
 </style>
 </head>
 
 <body>
 
-<div class="video-container">
+<div class="video-container" id="player">
 
-    <iframe id="video"
-        src="https://dlstreams.com/stream/stream-63.php"
+    <iframe 
+        id="video"
+        src="https://liveon4.zip/antena.php?id=1879"
         allow="autoplay; fullscreen"
         allowfullscreen>
     </iframe>
@@ -60,29 +82,24 @@ iframe {
 
 <script>
 const btn = document.getElementById("fs-button");
-const container = document.querySelector(".video-container");
-
-// 15 saniye sonra buton kaybolur
-let hideTime = 15000;
-
-setTimeout(() => {
-    btn.style.opacity = "0";
-    btn.style.transition = "0.5s";
-
-    setTimeout(() => {
-        btn.style.display = "none";
-    }, 500);
-}, hideTime);
+const player = document.getElementById("player");
 
 function goFullScreen() {
-    if (container.requestFullscreen) {
-        container.requestFullscreen();
-    } else if (container.webkitRequestFullscreen) {
-        container.webkitRequestFullscreen();
+    if (player.requestFullscreen) {
+        player.requestFullscreen();
+    } else if (player.webkitRequestFullscreen) {
+        player.webkitRequestFullscreen();
     }
 
     btn.style.display = "none";
 }
+
+// fullscreen çıkınca buton geri gelsin
+document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+        btn.style.display = "block";
+    }
+});
 </script>
 
 </body>
