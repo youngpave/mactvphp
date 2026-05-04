@@ -3,93 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Maç TV | Canlı Yayın</title>
+<title>Maç TV | Akıllı Tam Ekran</title>
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    overflow: hidden;
-}
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+    }
 
-/* ANA KAPSAYICI */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    /* KAPSAYICI */
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-/* İFRAME AYARLARI */
-iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    outline: none;
-}
+    /* İFRAME - İzinler ve tam yerleşim */
+    #video {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: #000;
+    }
 
-/* TAM EKRAN MODU ÖZEL AYARLARI (BOŞLUKLARI SIFIRLAR) */
-.video-container:fullscreen {
-    width: 100vw !important;
-    height: 100vh !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #000;
-}
-
-/* Webkit (Chrome/Safari) için tam ekran boşluk sıfırlama */
-.video-container:-webkit-full-screen {
-    width: 100% !important;
-    height: 100% !important;
-    margin: 0 !important;
-}
-
-/* Tam ekrandayken iframe'i zorla yay */
-.video-container:fullscreen iframe {
-    width: 100vw !important;
-    height: 100vh !important;
-    top: 0 !important;
-    left: 0 !important;
-}
-
-/* BUTON TASARIMI */
-#fs-button {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 35px;
-    background: #e50914; /* Netflix kırmızısı gibi daha canlı bir kırmızı */
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    z-index: 9999;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-    transition: transform 0.2s;
-}
-
-#fs-button:active {
-    transform: translateX(-50%) scale(0.95);
-}
+    /* BAŞLAT BUTONU */
+    #fs-button {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px 35px;
+        background: #ff0000;
+        color: white;
+        border: 2px solid #fff;
+        border-radius: 50px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 9999;
+        box-shadow: 0 0 20px rgba(255,0,0,0.5);
+    }
 </style>
 </head>
 
 <body>
 
-<div class="video-container" id="player">
-
+<div class="video-wrapper">
     <iframe 
         id="video"
         src="https://dlstreams.com/stream/stream-63.php"
@@ -99,40 +64,42 @@ iframe {
         mozallowfullscreen="true">
     </iframe>
 
-    <button id="fs-button" onclick="goFullScreen()">
-        YAYINI BAŞLAT (TAM EKRAN)
+    <button id="fs-button" onclick="launchVideo()">
+        YAYINI KENDİ TAM EKRANINDA BAŞLAT
     </button>
-
 </div>
 
 <script>
-const btn = document.getElementById("fs-button");
-const player = document.getElementById("player");
+function launchVideo() {
+    const iframe = document.getElementById("video");
+    const btn = document.getElementById("fs-button");
 
-function goFullScreen() {
-    if (player.requestFullscreen) {
-        player.requestFullscreen();
-    } else if (player.webkitRequestFullscreen) {
-        player.webkitRequestFullscreen();
-    } else if (player.msRequestFullscreen) {
-        player.msRequestFullscreen();
+    // DİKKAT: Burada player'ı değil, doğrudan IFRAME'i tam ekran yapıyoruz.
+    // Bu, player'ın "ben tam ekrandayım" sanmasını sağlar.
+    if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+    } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+    } else if (iframe.mozRequestFullScreen) {
+        iframe.mozRequestFullScreen();
+    } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
     }
 
+    // Butonu gizle
     btn.style.display = "none";
 }
 
-// Fullscreen değişince buton kontrolü
-function handleFSChange() {
+// Tam ekrandan çıkınca butonun geri gelmesi için
+function exitHandler() {
     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen) {
-        btn.style.display = "block";
-    } else {
-        btn.style.display = "none";
+        document.getElementById("fs-button").style.display = "block";
     }
 }
 
-document.addEventListener("fullscreenchange", handleFSChange);
-document.addEventListener("webkitfullscreenchange", handleFSChange);
-document.addEventListener("mozfullscreenchange", handleFSChange);
+document.addEventListener("fullscreenchange", exitHandler);
+document.addEventListener("webkitfullscreenchange", exitHandler);
+document.addEventListener("mozfullscreenchange", exitHandler);
 </script>
 
 </body>
