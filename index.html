@@ -2,10 +2,10 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maç TV | Canlı Yayın</title>
+
     <style>
-        /* Temel Ayarlar */
         * {
             margin: 0;
             padding: 0;
@@ -15,95 +15,79 @@
         body, html {
             width: 100%;
             height: 100%;
+            background: #000;
             overflow: hidden;
-            background-color: #000;
         }
 
         .video-container {
-            position: relative;
             width: 100%;
             height: 100%;
-            display: flex;
-            flex-direction: column;
+            position: relative;
         }
 
         iframe {
-            flex-grow: 1;
             width: 100%;
             height: 100%;
             border: none;
         }
 
-        /* Alt Kısımdaki Buton Tasarımı */
         #fs-button {
             position: absolute;
-            bottom: 20px; /* Aşağıdan 20px yukarıda */
+            bottom: 20px;
             left: 50%;
-            transform: translateX(-50%); /* Ortalamak için */
-            padding: 15px 30px;
-            background: rgba(255, 0, 0, 0.8); /* Dikkat çekici kırmızı */
-            color: white;
+            transform: translateX(-50%);
+            padding: 15px 25px;
+            background: red;
+            color: #fff;
             border: none;
             border-radius: 50px;
-            cursor: pointer;
-            z-index: 999;
             font-weight: bold;
-            font-family: sans-serif;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: 0.3s;
-        }
-
-        #fs-button:hover {
-            background: rgba(200, 0, 0, 1);
-            transform: translateX(-50%) scale(1.05);
+            z-index: 999;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <div class="video-container" id="player-layout">
-        <iframe 
-            id="video-iframe"
-            src="https://dlstreams.com/stream/stream-63.php" 
-            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-            sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation"
-            allowfullscreen 
-            scrolling="no">
-        </iframe>
+<div class="video-container">
 
-        <button id="fs-button" onclick="goFullScreen()">YAYINI TAM EKRAN BAŞLAT</button>
-    </div>
+    <iframe 
+        id="video-iframe"
+        src="https://liveon4.zip/antena.php?id=1879"
+        allow="autoplay; fullscreen"
+        sandbox="allow-scripts allow-same-origin allow-fullscreen"
+        allowfullscreen>
+    </iframe>
 
-    <script>
-        const layout = document.getElementById("player-layout");
-        const btn = document.getElementById("fs-button");
+    <button id="fs-button" onclick="goFullScreen()">
+        YAYINI TAM EKRAN BAŞLAT
+    </button>
 
-        function goFullScreen() {
-            // Tam ekrana geçiş fonksiyonu
-            if (layout.requestFullscreen) {
-                layout.requestFullscreen();
-            } else if (layout.webkitRequestFullscreen) { // Safari için
-                layout.webkitRequestFullscreen();
-            } else if (layout.msRequestFullscreen) { // IE11 için
-                layout.msRequestFullscreen();
-            }
+</div>
 
-            // Butonu hemen yok et
-            btn.style.display = "none";
-        }
+<script>
+function goFullScreen() {
+    const iframe = document.getElementById("video-iframe");
+    const btn = document.getElementById("fs-button");
 
-        // Eğer kullanıcı ESC ile tam ekrandan çıkarsa butonun geri gelmesini istersen:
-        function checkScreenStatus() {
-            if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
-                btn.style.display = "block"; // Tam ekrandan çıkınca buton geri gelir
-            }
-        }
+    if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+    } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+    } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+    }
 
-        document.addEventListener("fullscreenchange", checkScreenStatus);
-        document.addEventListener("webkitfullscreenchange", checkScreenStatus);
-        document.addEventListener("mozfullscreenchange", checkScreenStatus);
-        document.addEventListener("MSFullscreenChange", checkScreenStatus);
-    </script>
+    btn.style.display = "none";
+}
+
+// fullscreen çıkınca buton geri gelsin
+document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+        document.getElementById("fs-button").style.display = "block";
+    }
+});
+</script>
 
 </body>
 </html>
