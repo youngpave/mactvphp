@@ -6,83 +6,58 @@
 <title>Maç TV | Canlı Yayın</title>
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    overflow: hidden;
-}
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+    }
 
-/* ANA KAPSAYICI */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .video-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-/* İFRAME AYARLARI */
-iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    outline: none;
-}
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        z-index: 1; /* Yayın arkada kalsın */
+    }
 
-/* TAM EKRAN MODU ÖZEL AYARLARI (BOŞLUKLARI SIFIRLAR) */
-.video-container:fullscreen {
-    width: 100vw !important;
-    height: 100vh !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #000;
-}
+    /* BUTONU BURADAN DÜZENLEDİM */
+    #fs-button {
+        position: fixed; /* Ekrana çiviler */
+        bottom: 50px; /* Aşağıdan mesafe */
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 18px 40px;
+        background: #ff0000; /* Parlak kırmızı */
+        color: white;
+        border: 2px solid white;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 999999; /* Reklamların ve playerın üstünde kalması için çok yüksek değer */
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+        display: block; /* Başlangıçta mutlaka görünsün */
+    }
 
-/* Webkit (Chrome/Safari) için tam ekran boşluk sıfırlama */
-.video-container:-webkit-full-screen {
-    width: 100% !important;
-    height: 100% !important;
-    margin: 0 !important;
-}
-
-/* Tam ekrandayken iframe'i zorla yay */
-.video-container:fullscreen iframe {
-    width: 100vw !important;
-    height: 100vh !important;
-    top: 0 !important;
-    left: 0 !important;
-}
-
-/* BUTON TASARIMI */
-#fs-button {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 35px;
-    background: #e50914; /* Netflix kırmızısı gibi daha canlı bir kırmızı */
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    z-index: 9999;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-    transition: transform 0.2s;
-}
-
-#fs-button:active {
-    transform: translateX(-50%) scale(0.95);
-}
+    /* Tam ekranda buton gizleme */
+    .video-container:fullscreen #fs-button {
+        display: none;
+    }
 </style>
 </head>
 
@@ -100,7 +75,7 @@ iframe {
     </iframe>
 
     <button id="fs-button" onclick="goFullScreen()">
-        YAYINI BAŞLAT (TAM EKRAN)
+        YAYINI TAM EKRAN BAŞLAT
     </button>
 
 </div>
@@ -110,6 +85,7 @@ const btn = document.getElementById("fs-button");
 const player = document.getElementById("player");
 
 function goFullScreen() {
+    // Tam ekrana geçiş denemesi
     if (player.requestFullscreen) {
         player.requestFullscreen();
     } else if (player.webkitRequestFullscreen) {
@@ -117,22 +93,21 @@ function goFullScreen() {
     } else if (player.msRequestFullscreen) {
         player.msRequestFullscreen();
     }
-
-    btn.style.display = "none";
+    
+    // Butonu tıklandığı an gizle
+    btn.style.setProperty('display', 'none', 'important');
 }
 
-// Fullscreen değişince buton kontrolü
-function handleFSChange() {
+// Tam ekrandan çıkışta butonu geri getirme
+function checkExit() {
     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen) {
-        btn.style.display = "block";
-    } else {
-        btn.style.display = "none";
+        btn.style.setProperty('display', 'block', 'important');
     }
 }
 
-document.addEventListener("fullscreenchange", handleFSChange);
-document.addEventListener("webkitfullscreenchange", handleFSChange);
-document.addEventListener("mozfullscreenchange", handleFSChange);
+document.addEventListener("fullscreenchange", checkExit);
+document.addEventListener("webkitfullscreenchange", checkExit);
+document.addEventListener("mozfullscreenchange", checkExit);
 </script>
 
 </body>
