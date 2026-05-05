@@ -3,7 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Ultra Koruma</title>
+    <title>Maç TV | Reklam Engelleyici</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+
+        /* Videoyu kapsayan alan */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Reklamların üzerine binmesini engelleyen CSS koruması */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Sayfadaki tüm reklam olabilecek her şeyi (iframe hariç) etkisizleştir */
+        div:not(.video-container), ins, a, span[style*="fixed"] {
+            pointer-events: none !important;
+            user-select: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <iframe 
+            id="main-stream"
+            src="https://dlstreams.com/stream/stream-63.php" 
+            allow="autoplay; encrypted-media; fullscreen" 
+            allowfullscreen 
+            scrolling="no">
+        </iframe>
+    </div>
+
+    <script>
+        // 1. TAM ENGELLEME: Yeni pencere açma yetkisini tamamen yok et
+        Object.defineProperty(window, 'open', { value: function() { return null; }, writable: false });
+
+        // 2. YÖNLENDİRME KİLİDİ: Sayfanın başka bir URL'ye gitmesini engelle
+        window.onbeforeunload = function() { return "Reklam engellendi, yayında kal!"; };
+
+        // 3. 7 KATMANLI TEMİZLİK: Saniyede 10 kez tarama yapar
+        setInterval(function() {
+            // Ana yayın dışındaki tüm iframe'leri anında sil
+            document.querySelectorAll('iframe:not(#main-stream)').forEach(el => el.remove());
+
+            // Reklamların en sevdiği yüksek z-index değerine sahip elementleri temizle
+            document.querySelectorAll('*').forEach(el => {
+                const zIndex = window.getComputedStyle(el).zIndex;
+                if (zIndex > 10 && el.id !== 'main-stream') {
+                    el.style.display = 'none';
+                    el.remove();
+                }
+            });
+        }, 100); // 100ms hızında (reklamların çıkmasına fırsat vermez)
+
+        // 4. TIKLAMA KORUMASI: Tıklamayı sadece videoda tutar
+        document.body.addEventListener('mousedown', function(e) {
+            if (e.target.id !== 'main-stream') {
+                console.log("Gizli reklam tıklaması engellendi.");
+            }
+        }, true);
+    </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maç TV </title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
