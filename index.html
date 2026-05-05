@@ -3,53 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Kesintisiz Yayın</title>
+    <title>Maç TV | Ultra Koruma</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
 
         .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* GÖRÜNMEZ KALKAN: Reklamların üzerine binmesini engeller */
+        .shield {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            z-index: 1; /* Yayını temel kata koy */
+            height: 90%; /* Alt barı (play butonu kısmı) açık bırakabilirsin veya 100% yapabilirsin */
+            z-index: 999;
+            background: transparent;
+            pointer-events: none; /* İlk aşamada tıklamayı geçirsin */
         }
 
         iframe {
             width: 100%;
             height: 100%;
             border: none;
-            /* Tıklamayı videoya odaklar, dışarıdan sızan reklam katmanlarını engeller */
             position: relative;
-            z-index: 10;
-        }
-
-        /* YÖNTEM: REKLAM MASKELERİ */
-        /* Eğer reklamlar iframe dışından geliyorsa onları görünmez yap */
-        .ad, .ads, .advert, [id*="google_ads"], [class*="reklam"] {
-            display: none !important;
-            visibility: hidden !important;
-            pointer-events: none !important;
-            opacity: 0 !important;
-            height: 0 !important;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
 
     <div class="video-container">
+        <div class="shield"></div>
         <iframe 
             id="main-stream"
             src="https://dlstreams.com/stream/stream-63.php" 
@@ -60,26 +49,30 @@
     </div>
 
     <script>
-        // YÖNTEM: TIKLAMA TUZAĞI ENGELLEYİCİ (Pop-up Blocker)
-        // Site reklam açmak için window.open komutunu kullandığında onu etkisiz hale getirir
-        window.open = function() {
-            console.log("MaçTV: Reklam sekmesi açılması engellendi.");
-            return null;
+        // 1. Yeni sekme açılmasını kesin olarak engelle
+        window.open = function() { return null; };
+
+        // 2. Sayfadan ayrılma uyarısı (Yönlendirmeyi durdurur)
+        window.onbeforeunload = function() {
+            return "Yayından ayrılmak üzeresiniz!";
         };
 
-        // YÖNTEM: GÖRÜNMEZ KATMAN TEMİZLİĞİ
-        // Yayın başladıktan sonra sayfanın üzerine binen şeffaf reklam katmanlarını tespit eder ve siler
+        // 3. Agresif Tıklama Yakalayıcı
+        document.addEventListener('click', function(e) {
+            // Eğer tıklama bir linke gidiyorsa durdur
+            if (e.target.closest('a') || e.target.tagName === 'A') {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
+
+        // 4. Periyodik Temizlik (İçeride açılan gizli reklamları siler)
         setInterval(function() {
-            const allElements = document.querySelectorAll('div, ins, span');
-            allElements.forEach(el => {
-                const zIndex = window.getComputedStyle(el).getPropertyValue('z-index');
-                // Eğer bir element yayından (10) daha üstteyse ve reklam şüphesi varsa onu pasifize et
-                if (parseInt(zIndex) > 10) {
-                    el.style.pointerEvents = 'none';
-                    el.style.display = 'none';
-                }
+            // Ana iframe dışındaki tüm iframe'leri ve pop-up benzeri divleri temizle
+            document.querySelectorAll('iframe:not(#main-stream), [class*="pop"], [id*="pop"], [style*="z-index: 2147483647"]').forEach(el => {
+                el.remove();
             });
-        }, 1000); // Her saniye kontrol et
+        }, 300);
     </script>
 
 </body>
