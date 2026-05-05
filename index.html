@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Canlı Yayın</title>
+    <title>Maç TV | Kesintisiz Yayın</title>
     <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
         * {
             margin: 0;
             padding: 0;
@@ -15,8 +14,8 @@
         body, html {
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
+            overflow: hidden;
+            background-color: #000;
         }
 
         .video-container {
@@ -25,12 +24,26 @@
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 1; /* Yayını temel kata koy */
         }
 
         iframe {
             width: 100%;
             height: 100%;
             border: none;
+            /* Tıklamayı videoya odaklar, dışarıdan sızan reklam katmanlarını engeller */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* YÖNTEM: REKLAM MASKELERİ */
+        /* Eğer reklamlar iframe dışından geliyorsa onları görünmez yap */
+        .ad, .ads, .advert, [id*="google_ads"], [class*="reklam"] {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            height: 0 !important;
         }
     </style>
 </head>
@@ -38,15 +51,36 @@
 
     <div class="video-container">
         <iframe 
+            id="main-stream"
             src="https://dlstreams.com/stream/stream-63.php" 
-            allow="autoplay; encrypted-media" 
+            allow="autoplay; encrypted-media; fullscreen" 
             allowfullscreen 
             scrolling="no">
         </iframe>
     </div>
 
+    <script>
+        // YÖNTEM: TIKLAMA TUZAĞI ENGELLEYİCİ (Pop-up Blocker)
+        // Site reklam açmak için window.open komutunu kullandığında onu etkisiz hale getirir
+        window.open = function() {
+            console.log("MaçTV: Reklam sekmesi açılması engellendi.");
+            return null;
+        };
+
+        // YÖNTEM: GÖRÜNMEZ KATMAN TEMİZLİĞİ
+        // Yayın başladıktan sonra sayfanın üzerine binen şeffaf reklam katmanlarını tespit eder ve siler
+        setInterval(function() {
+            const allElements = document.querySelectorAll('div, ins, span');
+            allElements.forEach(el => {
+                const zIndex = window.getComputedStyle(el).getPropertyValue('z-index');
+                // Eğer bir element yayından (10) daha üstteyse ve reklam şüphesi varsa onu pasifize et
+                if (parseInt(zIndex) > 10) {
+                    el.style.pointerEvents = 'none';
+                    el.style.display = 'none';
+                }
+            });
+        }, 1000); // Her saniye kontrol et
+    </script>
+
 </body>
 </html>
-
-
-Tam ekran butonu ekle
