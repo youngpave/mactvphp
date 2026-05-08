@@ -2,51 +2,39 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Canlı Yayın</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maç TV | Kesintisiz Yayın</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
-        }
-
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+        #video { width: 100%; height: 100%; background: #000; }
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <iframe 
-            src="https://dlhd.pk/stream/stream-62.php" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen 
-            scrolling="no">
-        </iframe>
-    </div>
+    <video id="video" controls autoplay playsinline></video>
 
+    <script>
+        var video = document.getElementById('video');
+        // Kendi oluşturduğun proxy dosyasını çağırıyorsun
+        var videoSrc = 'proxy.php'; 
+
+        if (Hls.isSupported()) {
+            var hls = new Hls({
+                // 15 dakikalık kopmayı engellemek için otomatik yeniden bağlanma ayarı
+                manifestLoadingMaxRetry: 10,
+                manifestLoadingRetryDelay: 1000
+            });
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+        }
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // Safari ve Mobil cihazlar için doğrudan oynatma
+            video.src = videoSrc;
+        }
+    </script>
 </body>
 </html>
-
-
-Tam ekran butonu ekle
