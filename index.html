@@ -3,155 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV </title>
+    <title>Maç TV | Canlı Yayın</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+        /* Tüm boşlukları sıfırla ve taşmaları engelle */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        /* Videoyu kapsayan alan */
-        .video-container {
-            position: relative;
+        body, html {
             width: 100%;
             height: 100%;
-            z-index: 1;
+            overflow: hidden; /* Kaydırma çubuklarını gizler */
+            background-color: #000; /* Arka planı siyah yapar */
         }
-
-        /* Reklamların üzerine binmesini engelleyen CSS koruması */
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            position: relative;
-            z-index: 5;
-        }
-
-        /* Sayfadaki tüm reklam olabilecek her şeyi (iframe hariç) etkisizleştir */
-        div:not(.video-container), ins, a, span[style*="fixed"] {
-            pointer-events: none !important;
-            user-select: none !important;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="video-container">
-        <iframe 
-            id="main-stream"
-            src="https://dlhd.pk/stream/stream-62.php" 
-            allow="autoplay; encrypted-media; fullscreen" 
-            allowfullscreen 
-            scrolling="no">
-        </iframe>
-    </div>
-
-    <script>
-        // 1. TAM ENGELLEME: Yeni pencere açma yetkisini tamamen yok et
-        Object.defineProperty(window, 'open', { value: function() { return null; }, writable: false });
-
-        // 2. YÖNLENDİRME KİLİDİ: Sayfanın başka bir URL'ye gitmesini engelle
-        window.onbeforeunload = function() { return "Reklam engellendi, yayında kal!"; };
-
-        // 3. 7 KATMANLI TEMİZLİK: Saniyede 10 kez tarama yapar
-        setInterval(function() {
-            // Ana yayın dışındaki tüm iframe'leri anında sil
-            document.querySelectorAll('iframe:not(#main-stream)').forEach(el => el.remove());
-
-            // Reklamların en sevdiği yüksek z-index değerine sahip elementleri temizle
-            document.querySelectorAll('*').forEach(el => {
-                const zIndex = window.getComputedStyle(el).zIndex;
-                if (zIndex > 10 && el.id !== 'main-stream') {
-                    el.style.display = 'none';
-                    el.remove();
-                }
-            });
-        }, 100); // 100ms hızında (reklamların çıkmasına fırsat vermez)
-
-        // 4. TIKLAMA KORUMASI: Tıklamayı sadece videoda tutar
-        document.body.addEventListener('mousedown', function(e) {
-            if (e.target.id !== 'main-stream') {
-                console.log("Gizli reklam tıklaması engellendi.");
-            }
-        }, true);
-    </script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV </title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: #000; }
 
         .video-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* GÖRÜNMEZ KALKAN: Reklamların üzerine binmesini engeller */
-        .shield {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 90%; /* Alt barı (play butonu kısmı) açık bırakabilirsin veya 100% yapabilirsin */
-            z-index: 999;
-            background: transparent;
-            pointer-events: none; /* İlk aşamada tıklamayı geçirsin */
+            height: 100%;
         }
 
         iframe {
             width: 100%;
             height: 100%;
             border: none;
-            position: relative;
-            z-index: 1;
         }
     </style>
 </head>
 <body>
 
     <div class="video-container">
-        <div class="shield"></div>
         <iframe 
-            id="main-stream"
-            src="" 
-            allow="autoplay; encrypted-media; fullscreen" 
+            src="https://dlhd.pk/stream/stream-62.php" 
+            allow="autoplay; encrypted-media" 
             allowfullscreen 
             scrolling="no">
         </iframe>
     </div>
 
-    <script>
-        // 1. Yeni sekme açılmasını kesin olarak engelle
-        window.open = function() { return null; };
-
-        // 2. Sayfadan ayrılma uyarısı (Yönlendirmeyi durdurur)
-        window.onbeforeunload = function() {
-            return "Yayından ayrılmak üzeresiniz!";
-        };
-
-        // 3. Agresif Tıklama Yakalayıcı
-        document.addEventListener('click', function(e) {
-            // Eğer tıklama bir linke gidiyorsa durdur
-            if (e.target.closest('a') || e.target.tagName === 'A') {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-        }, true);
-
-        // 4. Periyodik Temizlik (İçeride açılan gizli reklamları siler)
-        setInterval(function() {
-            // Ana iframe dışındaki tüm iframe'leri ve pop-up benzeri divleri temizle
-            document.querySelectorAll('iframe:not(#main-stream), [class*="pop"], [id*="pop"], [style*="z-index: 2147483647"]').forEach(el => {
-                el.remove();
-            });
-        }, 300);
-    </script>
-
 </body>
 </html>
+
+
+Tam ekran butonu ekle
