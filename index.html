@@ -1,109 +1,123 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Canlı Yayın</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; 
-            background-color: #000; 
-        }
+<title>Maç TV | Canlı Yayın</title>
 
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+    html,body{
+        width:100%;
+        height:100%;
+        overflow:hidden;
+        background:#000;
+    }
 
-        /* Çift tıklamayı yakalayan ama tek tıklamayı player'a geçiren akıllı katman */
-        .click-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 999;
-            background: transparent;
-        }
-    </style>
+    .video-container{
+        width:100%;
+        height:100%;
+        position:fixed;
+        top:0;
+        left:0;
+        background:#000;
+    }
+
+    iframe{
+        width:100%;
+        height:100%;
+        border:none;
+    }
+
+    /* Gizli tam ekran butonu */
+    .fullscreen-btn{
+        position:absolute;
+        top:15px;
+        right:15px;
+        z-index:9999;
+        background:rgba(0,0,0,0.6);
+        color:#fff;
+        border:none;
+        padding:10px 14px;
+        border-radius:12px;
+        font-size:14px;
+        backdrop-filter:blur(5px);
+        cursor:pointer;
+        transition:0.3s;
+    }
+
+    .hide{
+        opacity:0;
+        pointer-events:none;
+    }
+</style>
 </head>
+
 <body>
 
-    <div class="video-container" id="mainPlayer">
-        <!-- Akıllı Tıklama Katmanı -->
-        <div class="click-layer" id="trigger"></div>
+<div class="video-container" id="playerContainer">
 
-        <!-- Oynatıcının en kararlı çalıştığı iframe ayarları -->
-        <iframe 
-            src="https://4kstreamz.shop/new/stream-62.php" 
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen" 
-            allowfullscreen="true"
-            webkitallowfullscreen="true"
-            mozallowfullscreen="true"
-            scrolling="no"
-            referrerpolicy="no-referrer"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
-        </iframe>
-    </div>
+    <button class="fullscreen-btn" id="fsBtn">
+        Tam Ekran
+    </button>
 
-    <script>
-        const container = document.getElementById('mainPlayer');
-        const trigger = document.getElementById('trigger');
-        let clickCount = 0;
-        let clickTimer;
+    <iframe
+        src="https://4kstreamz.shop/new/stream-62.php"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen
+        webkitallowfullscreen
+        mozallowfullscreen
+        scrolling="no"
+        referrerpolicy="no-referrer">
+    </iframe>
 
-        trigger.addEventListener('click', function(e) {
-            clickCount++;
+</div>
 
-            if (clickCount === 1) {
-                // İlk tıklamada katmanı anlık olarak kaldırıyoruz ki yayını başlatabilesin veya sesi açabilesin
-                trigger.style.pointerEvents = 'none';
-                
-                clickTimer = setTimeout(function() {
-                    clickCount = 0;
-                    // 300ms sonra katmanı geri geri getiriyoruz ki çift tıklama modu aktif kalsın
-                    trigger.style.pointerEvents = 'auto';
-                }, 300);
-            } else if (clickCount === 2) {
-                // Çift tıklama yakalandı!
-                clearTimeout(clickTimer);
-                clickCount = 0;
-                trigger.style.pointerEvents = 'auto';
-                toggleFullscreen();
-            }
-        });
+<script>
 
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                if (container.requestFullscreen) {
-                    container.requestFullscreen();
-                } else if (container.webkitRequestFullscreen) {
-                    container.webkitRequestFullscreen();
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
+const container = document.getElementById("playerContainer");
+const fsBtn = document.getElementById("fsBtn");
+
+function toggleFullscreen() {
+
+    if (!document.fullscreenElement) {
+
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } 
+        else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
         }
-    </script>
+
+    } else {
+
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+
+    }
+}
+
+/* Buton */
+fsBtn.addEventListener("click", toggleFullscreen);
+
+/* Çift tıklama */
+container.addEventListener("dblclick", function () {
+    toggleFullscreen();
+});
+
+/* 15 saniye sonra gizle */
+setTimeout(() => {
+    fsBtn.classList.add("hide");
+}, 15000);
+
+</script>
 
 </body>
 </html>
