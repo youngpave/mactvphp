@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -5,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maç TV | Canlı Yayın</title>
     <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
         * {
             margin: 0;
             padding: 0;
@@ -37,14 +37,14 @@
 <body>
 
     <div class="video-container">
-        <!-- Player'ın çalışması için gerekli ek sandbox izinleri eklendi -->
+        <!-- Sandbox izinleri genişletildi -->
         <iframe 
             src="https://4kstreamz.shop/new/stream-62.php" 
             allow="autoplay; encrypted-media; picture-in-picture" 
             allowfullscreen 
             scrolling="no"
             referrerpolicy="no-referrer"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-pointer-lock">
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-pointer-lock allow-popups allow-top-navigation allow-modals">
         </iframe>
     </div>
 
