@@ -2,46 +2,107 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maç TV | Canlı Yayın</title>
-    <!-- Güvenilir ve reklamsız Clappr Player kütüphanesini çekiyoruz -->
-    <script src="https://cdn.jsdelivr.net/npm/@clappr/player@latest/dist/clappr.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body, html {
             width: 100%;
             height: 100%;
-            background-color: #000;
-            overflow: hidden;
+            overflow: hidden; 
+            background-color: #000; 
         }
-        #player {
-            width: 100vw;
-            height: 100vh;
+
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Çift tıklamayı yakalayan ama tek tıklamayı player'a geçiren akıllı katman */
+        .click-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            background: transparent;
         }
     </style>
 </head>
 <body>
 
-    <!-- Oynatıcının yükleneceği alan -->
-    <div id="player"></div>
+    <div class="video-container" id="mainPlayer">
+        <!-- Akıllı Tıklama Katmanı -->
+        <div class="click-layer" id="trigger"></div>
+
+        <!-- Oynatıcının en kararlı çalıştığı iframe ayarları -->
+        <iframe 
+            src="https://4kstreamz.shop/new/stream-62.php" 
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen" 
+            allowfullscreen="true"
+            webkitallowfullscreen="true"
+            mozallowfullscreen="true"
+            scrolling="no"
+            referrerpolicy="no-referrer"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
+        </iframe>
+    </div>
 
     <script>
-        // Bilgisayardan ağ (network) sekmesinden bulduğun .m3u8 linkini buraya yapıştır
-        var m3u8_linki = "BURAYA_BULDUĞUN_M3U8_LİNKİNİ_YAPIŞTIR.m3u8";
+        const container = document.getElementById('mainPlayer');
+        const trigger = document.getElementById('trigger');
+        let clickCount = 0;
+        let clickTimer;
 
-        var player = new Clappr.Player({
-            source: m3u8_linki,
-            parentId: "#player",
-            width: "100%",
-            height: "100%",
-            autoPlay: true, // Otomatik başlasın
-            chromecast: true,
-            muted: false
+        trigger.addEventListener('click', function(e) {
+            clickCount++;
+
+            if (clickCount === 1) {
+                // İlk tıklamada katmanı anlık olarak kaldırıyoruz ki yayını başlatabilesin veya sesi açabilesin
+                trigger.style.pointerEvents = 'none';
+                
+                clickTimer = setTimeout(function() {
+                    clickCount = 0;
+                    // 300ms sonra katmanı geri geri getiriyoruz ki çift tıklama modu aktif kalsın
+                    trigger.style.pointerEvents = 'auto';
+                }, 300);
+            } else if (clickCount === 2) {
+                // Çift tıklama yakalandı!
+                clearTimeout(clickTimer);
+                clickCount = 0;
+                trigger.style.pointerEvents = 'auto';
+                toggleFullscreen();
+            }
         });
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
     </script>
 
 </body>
