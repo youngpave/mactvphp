@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -16,8 +15,8 @@
         body, html {
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
+            overflow: hidden; 
+            background-color: #000; 
         }
 
         .video-container {
@@ -38,14 +37,14 @@
 <body>
 
     <div class="video-container">
-        <!-- Sandbox ve Referrer Koruması Eklendi -->
+        <!-- Player'ın çalışması için gerekli ek sandbox izinleri eklendi -->
         <iframe 
             src="https://4kstreamz.shop/new/stream-62.php" 
             allow="autoplay; encrypted-media; picture-in-picture" 
             allowfullscreen 
             scrolling="no"
             referrerpolicy="no-referrer"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-pointer-lock">
         </iframe>
     </div>
 
