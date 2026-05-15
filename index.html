@@ -1,52 +1,25 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maç TV | Canlı Yayın</title>
     <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; 
-            background-color: #000; 
-        }
-
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <!-- Reklam pencerelerini (popup ve yönlendirmeleri) engelleyen güvenli sandbox -->
-        <iframe 
-            src="https://4kstreamz.shop/new/stream-62.php" 
-            allow="autoplay; encrypted-media; picture-in-picture" 
-            allowfullscreen 
-            scrolling="no"
-            referrerpolicy="no-referrer"
-            sandbox="allow-scripts allow-same-origin allow-forms">
-        </iframe>
-    </div>
+    <iframe 
+        src="https://4kstreamz.shop/new/stream-62.php" 
+        style="width: 100%; height: 100%;"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen; accelerometer; gyroscope" 
+        allowfullscreen="true"
+        webkitallowfullscreen="true" 
+        mozallowfullscreen="true"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
+    </iframe>
 
 </body>
 </html>
