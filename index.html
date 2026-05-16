@@ -1,141 +1,50 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Maç TV | Canlı Yayın</title>
+    <style>
+        /* Tüm boşlukları sıfırla ve taşmaları engelle */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<title>Maç TV | Canlı Yayın</title>
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Kaydırma çubuklarını gizler */
+            background-color: #000; /* Arka planı siyah yapar */
+        }
 
-<style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-    }
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    html,body{
-        width:100%;
-        height:100%;
-        overflow:hidden;
-        background:#000;
-    }
-
-    .video-container{
-        position:fixed;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        background:#000;
-    }
-
-    iframe{
-        width:100%;
-        height:100%;
-        border:none;
-    }
-
-    .fullscreen-btn{
-        position:absolute;
-        top:15px;
-        right:15px;
-        z-index:9999;
-        background:rgba(0,0,0,0.6);
-        color:#fff;
-        border:none;
-        padding:10px 14px;
-        border-radius:12px;
-        font-size:14px;
-        backdrop-filter:blur(5px);
-        cursor:pointer;
-        transition:0.3s;
-    }
-
-    .hide{
-        opacity:0;
-        pointer-events:none;
-    }
-</style>
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="video-container" id="playerContainer">
-
-    <button class="fullscreen-btn" id="fsBtn">
-        Tam Ekran
-    </button>
-
-    <iframe
-        id="videoFrame"
-        src="https://4kstreamz.shop/new/stream-62.php"
-        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-        allowfullscreen
-        webkitallowfullscreen
-        mozallowfullscreen
-        scrolling="no"
-        referrerpolicy="no-referrer"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
-    </iframe>
-
-</div>
-
-<script>
-
-const container = document.getElementById("playerContainer");
-const fsBtn = document.getElementById("fsBtn");
-
-/* Tam ekran */
-function toggleFullscreen() {
-
-    if (!document.fullscreenElement) {
-
-        if (container.requestFullscreen) {
-            container.requestFullscreen();
-        } 
-        else if (container.webkitRequestFullscreen) {
-            container.webkitRequestFullscreen();
-        }
-
-    } else {
-
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        }
-
-    }
-}
-
-/* Buton */
-fsBtn.addEventListener("click", toggleFullscreen);
-
-/* Çift tıklama tam ekran */
-container.addEventListener("dblclick", function () {
-    toggleFullscreen();
-});
-
-/* 15 saniye sonra gizle */
-setTimeout(() => {
-    fsBtn.classList.add("hide");
-}, 15000);
-
-/* Popup engelle */
-window.open = function() {
-    return null;
-};
-
-/* Link reklamlarını engelle */
-document.addEventListener('click', function(e) {
-
-    const link = e.target.closest('a');
-
-    if(link){
-        e.preventDefault();
-    }
-
-}, true);
-
-</script>
+    <div class="video-container">
+        <iframe 
+            src="https://dlhd.pk/stream/stream-63.php" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen 
+            scrolling="no">
+        </iframe>
+    </div>
 
 </body>
 </html>
+
