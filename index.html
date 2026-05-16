@@ -75,7 +75,7 @@
         mozallowfullscreen
         scrolling="no"
         referrerpolicy="no-referrer"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation">
+        sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
     </iframe>
 
 </div>
@@ -119,17 +119,17 @@ setTimeout(() => {
     fsBtn.classList.add("hide");
 }, 15000);
 
-/* Popup reklam engelle */
+/* Popup engelle */
 window.open = function() {
     return null;
 };
 
-/* Yeni sekme açmayı engelle */
-document.addEventListener('click', function(e){
+/* Link reklamlarını engelle */
+document.addEventListener('click', function(e) {
 
     const link = e.target.closest('a');
 
-    if(link && link.target === '_blank'){
+    if(link){
         e.preventDefault();
     }
 
