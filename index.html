@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maç TV | Canlı Yayın</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Maç TV | Canlı Yayın</title>
 
-    <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
 
-        html,body{
-            width:100%;
-            height:100%;
-            overflow:hidden;
-            background:#000;
-        }
+    html,body{
+        width:100%;
+        height:100%;
+        overflow:hidden;
+        background:#000;
+    }
 
-        .video-container{
-            position:fixed;
-            inset:0;
-            width:100%;
-            height:100%;
-        }
+    .video-container{
+        position:fixed;
+        inset:0;
+        width:100%;
+        height:100%;
+    }
 
-        iframe{
-            width:100%;
-            height:100%;
-            border:none;
-            background:#000;
-        }
-    </style>
+    iframe{
+        width:100%;
+        height:100%;
+        border:none;
+        background:#000;
+    }
+</style>
 </head>
 <body>
 
 <div class="video-container">
     <iframe
         src="https://dlhd.pk/watch/stream-62.php"
-        allow="autoplay; fullscreen; encrypted-media"
+        allow="autoplay; encrypted-media; fullscreen"
         allowfullscreen
         scrolling="no"
 
@@ -47,6 +47,7 @@
             allow-scripts
             allow-same-origin
             allow-fullscreen
+            allow-presentation
         ">
     </iframe>
 </div>
