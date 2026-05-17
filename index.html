@@ -4,47 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maç TV | Canlı Yayın</title>
+
     <style>
-        /* Tüm boşlukları sıfırla ve taşmaları engelle */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
         }
 
-        body, html {
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* Kaydırma çubuklarını gizler */
-            background-color: #000; /* Arka planı siyah yapar */
+        html,body{
+            width:100%;
+            height:100%;
+            overflow:hidden;
+            background:#000;
         }
 
-        .video-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        .video-container{
+            position:fixed;
+            inset:0;
+            width:100%;
+            height:100%;
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        iframe{
+            width:100%;
+            height:100%;
+            border:none;
+            background:#000;
         }
     </style>
 </head>
 <body>
 
-    <div class="video-container">
-        <iframe 
-            src="https://vevoyayin7.live/channel?id=ex7" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen 
-            scrolling="no">
-        </iframe>
-    </div>
+<div class="video-container">
+    <iframe
+        src="https://dlhd.pk/watch/stream-62.php"
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+        allowfullscreen
+        scrolling="no"
+
+        sandbox="
+            allow-scripts
+            allow-same-origin
+            allow-forms
+            allow-popups
+            allow-presentation
+            allow-fullscreen
+        ">
+    </iframe>
+</div>
 
 </body>
 </html>
-
